@@ -14,9 +14,13 @@ curl -s https://api.github.com/repos/wkhtmltopdf/wkhtmltopdf/releases/latest | s
 sudo dpkg -i wkhtmltox_*.bionic_amd64.deb
 
 # check the default path
+echo -e "\n"
 if ls /usr/local/bin/wkhtmltopdf 1> /dev/null 2>&1; then
-	echo -e "\n"
 	echo -e "The latest wkhtmltopdf now is installed and path is /usr/local/bin/wkhtmltopdf \n\n"
+else
+	echo -e "The latest wkhtmltopdf now is installed. You can use the following command to locate path: \n"
+	echo -e "\t whereis wkhtmltopdf \n"
+	echo -e "\n"
 fi
 
 # remove the deb file
