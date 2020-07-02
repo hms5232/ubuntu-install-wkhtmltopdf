@@ -8,7 +8,7 @@ if ls wkhtmltox_*.bionic_amd64.deb 1> /dev/null 2>&1; then
 fi
 
 # Call Github api to download the latest version deb
-curl -s https://api.github.com/repos/wkhtmltopdf/wkhtmltopdf/releases/latest | sed -r -n 's/.*"browser_download_url": *"(.*\.bionic_amd64\.deb)".*/\1/p' | wget -i -
+curl -s https://api.github.com/repos/wkhtmltopdf/packaging/releases/latest | sed -r -n 's/.*"browser_download_url": *"(.*\.bionic_amd64\.deb)".*/\1/p' | wget -i -
 
 # Let's install it!
 sudo dpkg -i wkhtmltox_*.bionic_amd64.deb
