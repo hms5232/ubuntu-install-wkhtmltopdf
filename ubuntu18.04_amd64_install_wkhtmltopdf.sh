@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# 遇到錯誤就中止
+set -e
+
 
 # 避免有舊版本存在
 if ls wkhtmltox_*.bionic_amd64.deb 1> /dev/null 2>&1; then
@@ -7,8 +10,24 @@ if ls wkhtmltox_*.bionic_amd64.deb 1> /dev/null 2>&1; then
 	rm wkhtmltox_*.bionic_amd64.deb
 fi
 
-# Call Github api to download the latest version deb
-curl -s https://api.github.com/repos/wkhtmltopdf/packaging/releases/latest | sed -r -n 's/.*"browser_download_url": *"(.*\.bionic_amd64\.deb)".*/\1/p' | wget -i -
+# Get deb info from Github api
+read -p "Input specific version or leave empty to download latest: " version
+if [ -z "$version" ] ; then
+	# Call Github api to download the latest version deb
+	url=$(curl -s https://api.github.com/repos/wkhtmltopdf/packaging/releases/latest | sed -r -n 's/.*"browser_download_url": *"(.*\.bionic_amd64\.deb)".*/\1/p')
+else
+	# download specific version which user designate
+	url=$(curl -s https://api.github.com/repos/wkhtmltopdf/packaging/releases/tags/$version | sed -r -n 's/.*"browser_download_url": *"(.*\.bionic_amd64\.deb)".*/\1/p')	
+fi
+
+# Check binary file of this version exist or not
+if [ -z "$url" ] ; then
+	echo "Not found! Please check release tag."
+	exit 1
+fi
+
+# download
+wget $url
 
 # Let's install it!
 sudo dpkg -i wkhtmltox_*.bionic_amd64.deb
