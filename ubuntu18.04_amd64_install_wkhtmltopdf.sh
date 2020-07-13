@@ -17,7 +17,12 @@ if [ -z "$version" ] ; then
 	url=$(curl -s https://api.github.com/repos/wkhtmltopdf/packaging/releases/latest | sed -r -n 's/.*"browser_download_url": *"(.*\.bionic_amd64\.deb)".*/\1/p')
 else
 	# download specific version which user designate
-	url=$(curl -s https://api.github.com/repos/wkhtmltopdf/packaging/releases/tags/$version | sed -r -n 's/.*"browser_download_url": *"(.*\.bionic_amd64\.deb)".*/\1/p')	
+	url=$(curl -s https://api.github.com/repos/wkhtmltopdf/packaging/releases/tags/$version | sed -r -n 's/.*"browser_download_url": *"(.*\.bionic_amd64\.deb)".*/\1/p')
+	
+	# Older version binary file store in other repo
+	if [ -z "$url" ] ; then
+		url=$(curl -s https://api.github.com/repos/wkhtmltopdf/wkhtmltopdf/releases/tags/$version | sed -r -n 's/.*"browser_download_url": *"(.*\.bionic_amd64\.deb)".*/\1/p')
+	fi
 fi
 
 # Check binary file of this version exist or not
