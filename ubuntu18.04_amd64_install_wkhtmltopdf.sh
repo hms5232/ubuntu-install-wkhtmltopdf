@@ -16,7 +16,7 @@ if [ -z "$version" ] ; then
 	# Call Github api to download the latest version deb
 	url=$(curl -s https://api.github.com/repos/wkhtmltopdf/packaging/releases/latest | sed -r -n 's/.*"browser_download_url": *"(.*\.bionic_amd64\.deb)".*/\1/p')
 else
-	# download specific version which user designate
+	# download specific version which user designates
 	url=$(curl -s https://api.github.com/repos/wkhtmltopdf/packaging/releases/tags/$version | sed -r -n 's/.*"browser_download_url": *"(.*\.bionic_amd64\.deb)".*/\1/p')
 	
 	# Older version binary file store in other repo
